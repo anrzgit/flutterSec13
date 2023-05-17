@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sec13/models/place_models.dart';
+import 'package:sec13/screens/places_detail_screen.dart';
 
 class PlacesList extends StatelessWidget {
   const PlacesList({super.key, required this.places});
@@ -26,6 +27,11 @@ class PlacesList extends StatelessWidget {
               .titleMedium!
               .copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PlaceDetailScreen(place: places[index]),
+          ));
+        },
       ),
     );
   }

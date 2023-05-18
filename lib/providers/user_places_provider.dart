@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sec13/models/place_models.dart';
 
 class UserPlacesNotifier extends StateNotifier<List<Place>> {
-  UserPlacesNotifier() : super([Place(title: 'testcase1')]);
+  UserPlacesNotifier() : super([]);
 
-  void addPlace(String title) {
-    final newPlace = Place(title: title);
+  void addPlace(String title, File image) {
+    final newPlace = Place(title: title, image: image);
     state = [newPlace, ...state];
   }
 }

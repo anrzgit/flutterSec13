@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sec13/providers/user_places_provider.dart';
 import 'package:sec13/widgets/image_input.dart';
+import 'package:sec13/widgets/location_input.dart';
 
 class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
@@ -14,14 +17,18 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   //initialise form key to use
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
+  File? _selectedImage;
 
   void _savePlace() {
+    _formKey.currentState!.validate();
     final enteredTitle = _titleController.text;
     if (enteredTitle.isEmpty) {
       return;
     }
     //entering the value in provider
-    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+    ref
+        .read(userPlacesProvider.notifier)
+        .addPlace(enteredTitle, _selectedImage!);
     Navigator.of(context).pop();
   }
 
@@ -46,6 +53,12 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please Enter a Valid Value";
+                    }
+                    return null;
+                  },
                   maxLength: 50,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -55,10 +68,14 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground),
                 ),
-                const ImageInput(),
-                const SizedBox(
-                  height: 16,
+                ImageInput(
+                  onPickImage: (image) {
+                    _selectedImage = image;
+                  },
                 ),
+                const SizedBox(height: 16),
+                LocationInput(),
+                const SizedBox(height: 16),
                 ElevatedButton.icon(
                   onPressed: _savePlace,
                   label: const Text("Add Place"),

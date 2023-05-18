@@ -9,18 +9,21 @@ class PlaceDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          place.title,
+        appBar: AppBar(
+          title: Text(
+            place.title,
+          ),
         ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(11),
-        child: Text(
-          place.title,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-        ),
-      ),
-    );
+        body: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            Image.file(
+              place.image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            )
+          ],
+        ));
   }
 }
